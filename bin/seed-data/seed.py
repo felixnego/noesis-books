@@ -28,7 +28,7 @@ def is_not_year(string):
 def prepare_df_col(col_name):
     """Reads one column from the initial
     dataset and returns the unique values"""
-    data = pd.read_csv('BX-Books.csv', sep=';', error_bad_lines=False, encoding='ISO-8859-1', usecols=[col_name])
+    data = pd.read_csv('books_reduces.csv', sep=';', error_bad_lines=False, encoding='ISO-8859-1', usecols=[col_name])
     data.drop_duplicates(inplace=True)
     data.replace(np.nan, 'Unknown', regex=True, inplace=True)
 
@@ -74,7 +74,7 @@ def insert_author_data(seeder):
 def insert_book_data(seeder):
     """Go through the main dataset CSV and insert Books"""
     if table_is_not_populated('Book', seeder):
-        with open('BX-Books.csv', 'r', encoding="latin-1") as csv_file:
+        with open('books_reduces.csv', 'r', encoding="latin-1") as csv_file:
             reader = csv.reader(csv_file, delimiter=";")
 
             # skip header

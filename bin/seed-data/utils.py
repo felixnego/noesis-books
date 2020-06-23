@@ -1,4 +1,5 @@
 import json
+import csv
 import mysql.connector
 
 def read_db_config():

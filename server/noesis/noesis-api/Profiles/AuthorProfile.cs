@@ -9,7 +9,9 @@ namespace noesis_api.Profiles
     {
         public AuthorProfile()
         {
-            CreateMap<BookAuthor, AuthorListDTO>();
+            CreateMap<BookAuthor, AuthorListDTO>()
+                .ForMember(dest => dest.Name,
+                            opt => opt.MapFrom(src => src.Author.Name));
 
             CreateMap<AuthorListDTO, Author>();
         }

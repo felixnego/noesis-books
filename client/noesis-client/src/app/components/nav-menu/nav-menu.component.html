@@ -1,0 +1,27 @@
+<header>
+    <nav class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <div class="container">
+            <a class="navbar-brand" [routerLink]="['/']"><fa name="book"></fa> Noesis</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse"
+                aria-label="Toggle navigation" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <form #searchForm="ngForm" class="form-inline">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search Books" aria-label="Search" name="search" ngModel>
+                <a class="btn btn-outline-primary my-2 my-sm-0" type="submit"
+                    [routerLink]="['/search']" [queryParams]="{search: searchForm.value.search}" queryParamsHandling="merge"><fa name="search"></fa></a>
+            </form>
+            <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse" [ngClass]="{ show: isExpanded }">
+                <ul class="navbar-nav flex-grow">
+                    <li *ngIf="username != null" class="nav-item">
+                        <a class="nav-link" disabled>Welcome, {{ username }}</a>
+                    </li>
+                    <li class="nav-item" [routerLinkActive]="['link-active']"
+                        [routerLinkActiveOptions]="{ exact: true }">
+                        <a class="nav-link text-dark" [routerLink]="['/books']">Books</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>

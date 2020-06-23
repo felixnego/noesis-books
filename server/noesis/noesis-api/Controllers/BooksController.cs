@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using noesis_api.Contexts;
 using noesis_api.Models;
 using noesis_api.DTOs;
+using noesis_api.Services;
 using AutoMapper;
 
 namespace noesis_api.Controllers
@@ -17,31 +18,20 @@ namespace noesis_api.Controllers
     public class BooksController : ControllerBase
     {
         private readonly NoesisApiContext _context;
-        private readonly IMapper _mapper;
+        private readonly IBookService _bookService;
 
-        public BooksController(NoesisApiContext context, IMapper mapper)
+        public BooksController(NoesisApiContext context, IBookService bookService)
         {
             _context = context;
-            _mapper = mapper;
+            _bookService = bookService;
         }
 
         // GET: api/Books
         [HttpGet]
         public async Task<IActionResult> GetBooks([FromQuery] int page = 0)
         {
-
-            
-                var books = await _context.Book
-
-                .Include(b => b.BookAuthors).ThenInclude(b => b.Author)
-                .Include(ba => ba.UserRatings)
-                .Skip(page)
-                .Take(1)
-                .ToListAsync();
-                var bookListDTOs = _mapper.Map<IEnumerable<BookListDTO>>(books);
-
-
-                return Ok(bookListDTOs);
+            var results = await _bookService.GetPageOfBooks(page);
+            return Ok(results);
         }
 
         // GET: api/Books/5

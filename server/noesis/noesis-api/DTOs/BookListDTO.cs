@@ -10,9 +10,11 @@ namespace noesis_api.DTOs
 
         public string Title { get; set; }
 
-        public List<BookCategory> BookCategories { get; set; }
+        public List<CategoryDTO> BookCategories { get; set; }
 
         public double AverageRating { get; set; }
+
+        public string ThumbnailURL { get; set; }
 
         public List<AuthorListDTO> BookAuthors { get; set; } = new List<AuthorListDTO>();
     }

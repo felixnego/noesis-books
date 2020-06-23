@@ -1,0 +1,31 @@
+.chips {
+    margin-bottom: 10px;
+}
+
+.rating-star {
+    color: orange
+}
+
+.thumbnail .poster{
+    width: 150px;
+    height: 210px;
+}
+
+.thumbnail {
+  background:#f7f7f7;
+  transition: transform .2s;
+  -webkit-box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 2px 15px 0px rgba(0,0,0,0.75);
+  text-align: center;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.thumbnail:hover {
+    border: 3px solid blue;
+}
+
+.jumbotron h1, p {
+    text-align: center;
+}

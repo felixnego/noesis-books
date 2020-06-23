@@ -1,0 +1,16 @@
+.card-img-top {
+    max-height: 300px;
+    max-width: 200px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.rating-star {
+    color: orange;
+}
+
+span {
+    color: blue;
+}

@@ -1,0 +1,155 @@
+<h1>Our Top Categories</h1>
+<div *ngFor="let pair of topBooksByCategory | keyvalue">
+    <h3>Top rated Books in <span>{{ pair.key }}</span></h3>
+    <div class="container my-4">
+        <hr class="my-4">
+        <!--Carousel Wrapper-->
+        <div id="{{ pair.key | slice:0:4 }}" class="carousel slide carousel-multi-item" data-ride="carousel">
+    
+            <!--Controls-->
+            <div class="controls-top">
+                <a class="btn-floating" href="#{{ pair.key | slice:0:4 }}" data-slide="prev"><i class="fa fa-chevron-left"></i></a>
+                <a class="btn-floating" href="#{{ pair.key | slice:0:4 }}" data-slide="next"><i class="fa fa-chevron-right"></i></a>
+            </div>
+            <!--/.Controls-->
+    
+            <!--Indicators-->
+            <ol class="carousel-indicators">
+                <li data-target="#multi-item-example" data-slide-to="0" class="active"></li>
+                <li data-target="#multi-item-example" data-slide-to="1"></li>
+                <li data-target="#multi-item-example" data-slide-to="2"></li>
+            </ol>
+            <!--/.Indicators-->
+    
+            <!--Slides-->
+            <div class="carousel-inner" role="listbox">
+    
+                <!--First slide-->
+                <div class="carousel-item active">
+    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[0].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[0].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[0].averageRating != 0">Rating: {{ pair.value[0].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[0].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[0].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[1].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[1].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[1].averageRating != 0">Rating: {{ pair.value[1].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[1].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[1].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[2].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[2].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[2].averageRating != 0">Rating: {{ pair.value[2].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[2].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[2].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <!--/.First slide-->
+    
+                <!--Second slide-->
+                <div class="carousel-item">
+    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[3].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[3].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[3].averageRating != 0">Rating: {{ pair.value[3].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[3].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[3].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[4].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[4].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[4].averageRating != 0">Rating: {{ pair.value[4].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[4].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[4].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="col-md-4 clearfix d-none d-md-block">
+                            <div class="card mb-2">
+                                <img class="card-img-top"
+                                    src="{{ pair.value[5].thumbnailURL }}"
+                                    alt="Card image cap">
+                                <div class="card-body">
+                                    <h4 class="card-title">{{ pair.value[5].title }}</h4>
+                                    <p class="card-text" *ngIf="pair.value[5].averageRating != 0">Rating: {{ pair.value[5].averageRating }} - <fa
+                                            *ngFor="let item of constructEmptyArray(pair.value[5].averageRating)" name="star" class="rating-star"></fa>
+                                    </p>
+                                    <p class="card-text" *ngIf="pair.value[5].averageRating == 0">
+                                        Not yet rated
+                                    </p>
+                                    <a class="btn btn-primary">See More</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+                <!--/.Second slide-->
+            </div>
+            <!--/.Slides-->
+        </div>
+        <!--/.Carousel Wrapper-->
+    </div>
+</div>
