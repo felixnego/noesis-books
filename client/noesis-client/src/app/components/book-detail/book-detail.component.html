@@ -1,0 +1,103 @@
+<div class="container" id="header">
+    <div class="jumbotron">
+        <h1>{{ book.title }}</h1>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6" id="book-details">
+                <h4><strong>Details:</strong></h4>
+                <h5><b>Publisher: </b>{{ book.publisher }}</h5>
+                <h5><b>Pages: </b>{{ book.pages }}</h5>
+                <h5><b>ISBN: </b>{{ book.isbn }}</h5>
+                <h5><b>Year: </b>{{ book.year }}</h5>
+                <h5><b>Description: </b></h5>
+                <p *ngIf="book.description">{{ book.description }}</p>
+                <p *ngIf="!book.description"><em><fa name="exclamation-triangle"></fa>This book does not have a description yet,
+                    according to the BookReads API. You can contact one of our admins to have
+                    the description manually updated.
+                </em></p>
+                <h5 *ngIf="book.averageRating != 0">Rating: {{ book.averageRating }} - <fa
+                        *ngFor="let item of constructEmptyArray(book.averageRating)" name="star" class="rating-star"></fa>
+                </h5>
+                <h5 *ngIf="book.averageRating == 0">
+                    Rating: not yet rated
+                </h5>
+                <h4>Author(s):</h4>
+                <div *ngFor="let author of book.bookAuthors">
+                    <h5><fa name="user"></fa> {{ author.name }}</h5>
+                </div>
+                <h4>Categories:</h4>
+                <mat-chip-list aria-label="Categories" class="chips">
+                    <mat-chip *ngFor="let cat of book.bookCategories" color="primary" selected>
+                        {{ cat.categoryDescription }}
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <img src="{{ book.coverBigURL }}" alt="" class="img-fluid">
+                </div>
+                <div class="text-center">
+                    <div class="notes-header">
+                        <h4>Notes left on this book:</h4>
+                    </div>
+                    <div *ngIf="book.userNotes">
+                        <ul>
+                            <li *ngFor="let note of book.userNotes">
+                                <a href="">
+                                    <p>{{ note.text }}</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div *ngIf="book.userNotes.length === 0">
+                        <p><em><fa name="exclamation-triangle"></fa> It seems that you have not left any notes on this book yet.</em></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h4>Comments Section:</h4>
+                <mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
+
+                    <ng-container matColumnDef="Username">
+                        <mat-header-cell *matHeaderCellDef> Username </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.username}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Comment Text">
+                        <mat-header-cell *matHeaderCellDef> Comment Text </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.text}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Added On">
+                        <mat-header-cell *matHeaderCellDef> Added On </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.addedOn}} </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Actions">
+                        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <button class="btn btn-danger"><fa name="trash"></fa> Delete</button>
+                            <button class="btn btn-warning"><fa name="edit"></fa> Edit</button>
+                        </mat-cell>
+                    </ng-container>
+                    
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+                </mat-table>
+                <div *ngIf="dataSource.length === 0">
+                    <p>
+                        <em>
+                            <fa name="exclamation-triangle"></fa> There are no comments here yet.
+                        </em>
+                    </p>
+                    <p><em>Be the first to leave a comment and let us what you think!</em></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,7 +1,6 @@
 import csv
 import numpy as np
 import pandas as pd
-import re
 from utils import * 
 from faker import Faker
 from random import randint
@@ -18,13 +17,6 @@ def table_is_not_populated(table_name, seeder):
     return False
 
 
-def is_not_year(string):
-    pattern = r'^\d{4}$'
-
-    if re.match(pattern, string):
-        return False
-    return True
-
 def prepare_df_col(col_name):
     """Reads one column from the initial
     dataset and returns the unique values"""
@@ -34,12 +26,6 @@ def prepare_df_col(col_name):
 
     return data[col_name].values
 
-
-def sanitize_name(name):
-    illegal_chars = ['\\', '\'', '"']
-    for char in illegal_chars:
-        name = name.replace(char, '')
-    return name
 
 
 def link_book_to_author(seeder, isbn, author):

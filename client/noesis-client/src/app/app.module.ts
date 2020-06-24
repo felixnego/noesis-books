@@ -13,7 +13,8 @@ import { MatChipsModule } from '@angular/material/chips'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner'
 import { TopBooksComponent } from './components/top-books/top-books.component'
 import { SearchResultsComponent } from './components/search-results/search-results.component'
-import { from } from 'rxjs'
+import { MatTableModule } from '@angular/material/table'
+import { BookDetailComponent } from './components/book-detail/book-detail.component'
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { from } from 'rxjs'
     NavMenuComponent,
     BookListComponent,
     TopBooksComponent,
-    SearchResultsComponent
+    SearchResultsComponent,
+    BookDetailComponent
   ],
   imports: [
     BrowserModule,
@@ -32,6 +34,7 @@ import { from } from 'rxjs'
     HttpClientModule,
     AngularFontAwesomeModule,
     MatChipsModule,
+    MatTableModule,
     MatProgressSpinnerModule,
     BrowserAnimationsModule
   ],

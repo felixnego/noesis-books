@@ -13,10 +13,11 @@ namespace noesis_api.Services
     public interface IBookService
     {
         Task<IEnumerable<BookListDTO>> GetPageOfBooks(int page);
+        Task<BookDetailDTO> GetBookDetails(long id);
         Task<IEnumerable<CategoryDTO>> GetTopCategories();
         Task<IEnumerable<BookListDTO>> TopInCategory(long categoryId);
         Task<IEnumerable<BookListDTO>> SearchBooks(string searchTerms);
-        Boolean SearchAuthorNames(List<BookAuthor> authors, string term);
+        Task AddBook(BookDetailDTO book);
     }
 
     public class BookService : IBookService
@@ -44,6 +45,21 @@ namespace noesis_api.Services
 
             return _mapper.Map<IEnumerable<BookListDTO>>(books);
 
+        }
+
+        public async Task<BookDetailDTO> GetBookDetails(long id)
+        {
+            var book = await _context.Book
+                .Include(b => b.BookCategories).ThenInclude(bc => bc.Category)
+                .Include(b => b.BookAuthors).ThenInclude(b => b.Author)
+                .Include(b => b.UserComments).ThenInclude(b => b.Comment)
+                .Include(b => b.UserComments).ThenInclude(b => b.User)
+                .Include(b => b.UserNotes).ThenInclude(b => b.Note)
+                .Include(b => b.UserNotes).ThenInclude(b => b.User)
+                .Include(ba => ba.UserRatings)
+                .FirstOrDefaultAsync(b => b.Id == id);
+
+            return _mapper.Map<BookDetailDTO>(book);
         }
 
         public async Task<IEnumerable<CategoryDTO>> GetTopCategories()
@@ -106,15 +122,18 @@ namespace noesis_api.Services
             return null;
         }
 
-        public Boolean SearchAuthorNames(List<BookAuthor> authors, string term) {
-            bool result = false;
+        public async Task AddBook(BookDetailDTO book)
+        {
+            var bookForCreation = _mapper.Map<Book>(book);
 
-            authors.ForEach(authorObj => {
-                if (authorObj.Author.Name.Contains(term)) result = true;
-            });
+            _context.Book.Add(bookForCreation);
+            await _context.SaveChangesAsync();
 
-            return result;
+            book.BookAuthors.ForEach(a =>
+                if
+            )
         }
+
 
 
     }

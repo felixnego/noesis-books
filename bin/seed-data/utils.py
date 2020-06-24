@@ -1,10 +1,44 @@
 import json
+import re
 import csv
 import mysql.connector
+
 
 def read_db_config():
     with open('local_config.json') as config_file:
         return json.load(config_file)
+
+
+def sanitize_name(name):
+    illegal_chars = ['\\', '\'', '"']
+    for char in illegal_chars:
+        name = name.replace(char, '')
+    return name
+
+
+def sanitize_description(text):
+    illegal_chars = ['\\', '\'', '"']
+
+    for char in illegal_chars:
+        text = text.replace(char, ' ')
+    
+    html_pattern = re.compile(r'<\w.+>')
+    matches = re.findall(html_pattern, text)
+
+    if matches:
+        for match in matches:
+            text = text.replace(match, '')
+    
+    return text
+    
+
+
+def is_not_year(string):
+    pattern = r'^\d{4}$'
+
+    if re.match(pattern, string):
+        return False
+    return True
 
 
 def get_entity_id_by_field(field, table, seeder):
@@ -31,6 +65,7 @@ def get_subject_id(subject_name, seeder):
         return False
     
     return result[0][0]
+    
 
 class SQLSeeder():
 

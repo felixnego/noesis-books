@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient, HttpParams } from '@angular/common/http'
 import { Observable, pipe } from 'rxjs'
 import { BookCard } from '../models/BookCard'
+import { BookDetail } from '../models/BookDetail'
 import { Category } from '../models/Category'
 import { environment } from 'src/environments/environment'
 
@@ -37,6 +38,10 @@ export class BookService {
     params = params.append('terms', terms)
 
     return this.http.get<BookCard[]>(this.reportsURL + '/search', { params: params })
+  }
+
+  getBookDetails(id: number): Observable<BookDetail> {
+    return this.http.get<BookDetail>(this.bookURL + `/${id}`)
   }
 
   resetPage() {

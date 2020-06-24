@@ -36,16 +36,16 @@ namespace noesis_api.Controllers
 
         // GET: api/Books/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(long id)
+        public async Task<IActionResult> GetBook(long id)
         {
-            var book = await _context.Book.FindAsync(id);
+            var book = await _bookService.GetBookDetails(id);
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            return book;
+            return Ok(book);
         }
 
         // PUT: api/Books/5

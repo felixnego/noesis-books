@@ -16,6 +16,13 @@ namespace noesis_api.Profiles
                     opt => opt.MapFrom(src => src.UserRatings.Count == 0 ? 0 : Math.Round(src.UserRatings.Average(userRating => userRating.RatingValue), 1)));
 
             CreateMap<BookListDTO, Book>();
+
+            CreateMap<Book, BookDetailDTO>()
+                .ForMember(
+                    dest => dest.AverageRating,
+                    opt => opt.MapFrom(src => src.UserRatings.Count == 0 ? 0 : Math.Round(src.UserRatings.Average(userRating => userRating.RatingValue), 1)));
+
+            CreateMap<BookDetailDTO, Book>();
         }
     }
 }
