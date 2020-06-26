@@ -50,5 +50,21 @@ namespace noesis_api.Controllers
 
             return BadRequest("You must have search terms!");
         }
+
+        [HttpGet("allcategories")]
+        public async Task<IActionResult> AllCategories()
+        {
+            var results = await _bookService.GetAllCategories();
+
+            return Ok(results);
+        }
+
+        [HttpGet("allauthors")]
+        public async Task<IActionResult> AllAuthors()
+        {
+            var results = await _bookService.GetAllAuthors();
+
+            return Ok(results);
+        }
     }
 }

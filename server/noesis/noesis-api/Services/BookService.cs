@@ -19,6 +19,8 @@ namespace noesis_api.Services
         Task<IEnumerable<BookListDTO>> SearchBooks(string searchTerms);
         Task<Book> AddBook(BookDetailDTO book);
         Task<Book> UpdateBook(BookDetailDTO book);
+        Task<IEnumerable<CategoryDTO>> GetAllCategories();
+        Task<IEnumerable<AuthorListDTO>> GetAllAuthors();
     }
 
     public class BookService : IBookService
@@ -198,6 +200,20 @@ namespace noesis_api.Services
                 _context.BookCategory.Add(bookCategory);
                 _context.SaveChanges();
             });
+        }
+
+        public async Task<IEnumerable<CategoryDTO>> GetAllCategories()
+        {
+            var initialSet = await _context.Category.ToListAsync();
+
+            return _mapper.Map<IEnumerable<CategoryDTO>>(initialSet);
+        }
+
+        public async Task<IEnumerable<AuthorListDTO>> GetAllAuthors()
+        {
+            var initialSet = await _context.Author.ToListAsync();
+
+            return _mapper.Map<IEnumerable<AuthorListDTO>>(initialSet);
         }
     }
 }

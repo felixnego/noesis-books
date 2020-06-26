@@ -4,6 +4,7 @@ import { Observable, pipe } from 'rxjs'
 import { BookCard } from '../models/BookCard'
 import { BookDetail } from '../models/BookDetail'
 import { Category } from '../models/Category'
+import { Author } from '../models/Author'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -29,6 +30,14 @@ export class BookService {
     return this.http.get<Category[]>(this.reportsURL + '/topcategories')
   }
 
+  getAllCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(this.reportsURL + '/allcategories')
+  }
+
+  getAllAuthors(): Observable<Author[]> {
+    return this.http.get<Author[]>(this.reportsURL + '/allauthors')
+  }
+
   getTopBooksByCategory(id: number): Observable<BookCard[]> {
     return this.http.get<BookCard[]>(this.reportsURL + '/topcategories/' + `${id}`)
   }
@@ -42,6 +51,14 @@ export class BookService {
 
   getBookDetails(id: number): Observable<BookDetail> {
     return this.http.get<BookDetail>(this.bookURL + `/${id}`)
+  }
+
+  updateBook(book: BookDetail): Observable<any> {
+    return this.http.put(this.bookURL + `/${book.id}`, book)
+  }
+
+  addBook(book: BookDetail): Observable<any> {
+    return this.http.post(this.bookURL, book)
   }
 
   resetPage() {

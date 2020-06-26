@@ -1,0 +1,91 @@
+<div class="container">
+    <form [formGroup]="bookFrom">
+        <div class="form-group">
+            <label for="text">Title</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Add a title"
+                formControlName="title">
+            <span *ngIf="errorMessages.title" class="text-danger"><small>{{errorMessages.title}}</small> </span>
+        </div>
+        
+        <div class="form-group">
+            <label for="pages">Pages</label>
+            <input type="number" class="form-control" id="pages" name="pages" placeholder="No. of Pages" formControlName="pages">
+            <span *ngIf="errorMessages.pages" class="text-danger"><small>{{errorMessages.pages}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="isbn">ISBN</label>
+            <input type="text" class="form-control" id="isbn" name="isbn" placeholder="Book ISBN" formControlName="isbn">
+            <span *ngIf="errorMessages.isbn" class="text-danger"><small>{{errorMessages.isbn}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="year">Year</label>
+            <input type="number" class="form-control" id="year" name="year" placeholder="Publishing Year" formControlName="year">
+            <span *ngIf="errorMessages.year" class="text-danger"><small>{{errorMessages.year}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="goodReadsId">GoodReads Id</label>
+            <input type="number" class="form-control" id="goodReadsId" name="goodReadsId" placeholder="Does the book have a GoodReads Id?" formControlName="goodReadsId">
+            <span *ngIf="errorMessages.goodReadsId" class="text-danger"><small>{{errorMessages.goodReadsId}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="publisher">Publisher</label>
+            <input type="text" class="form-control" id="publisher" name="publisher" placeholder="Book Publisher" formControlName="publisher">
+            <span *ngIf="errorMessages.publisher" class="text-danger"><small>{{errorMessages.publisher}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="thumbnailURL">Thumbnail</label>
+            <input type="thumbnailURL" class="form-control" id="thumbnailURL" name="thumbnailURL" placeholder="Enter an URL for a thumbnail" formControlName="thumbnailURL">
+            <span *ngIf="errorMessages.thumbnailURL" class="text-danger"><small>{{errorMessages.thumbnailURL}}</small> </span>
+        </div>
+
+        <div class="form-group">
+            <label for="coverBigURL">Cover Picture</label>
+            <input type="text" class="form-control" id="coverBigURL" name="coverBigURL" placeholder="Enter an URL for a bigger, cover picture" formControlName="coverBigURL">
+            <span *ngIf="errorMessages.coverBigURL" class="text-danger"><small>{{errorMessages.coverBigURL}}</small> </span>
+        </div>
+
+        <mat-form-field class="category-chips">
+            <mat-chip-list #chipList aria-label="Category Selection">
+                <mat-chip *ngFor="let cat of categories" [selectable]="selectable" [removable]="removable"
+                    (removed)="remove(cat)">
+                    {{ cat.categoryDescription }}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New category..." #categoryInput [formControl]="categoryCtrl" [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let cat of filteredCategories | async" [value]="cat">
+                    {{ cat.categoryDescription }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field class="author-chips">
+            <mat-chip-list #chipList2 aria-label="Author Selection">
+                <mat-chip *ngFor="let author of authors" [selectable]="selectable" [removable]="removable"
+                    (removed)="removeAuthor(author)">
+                    {{ author.name }}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="New author..." #authorInput [formControl]="authorCtrl" [matAutocomplete]="autoAuthor"
+                    [matChipInputFor]="chipList2" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="addAuthor($event)">
+            </mat-chip-list>
+            <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selectedAuthor($event)">
+                <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+                    {{ author.name }}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <button *ngIf="data" type="submit" class="btn btn-warning" (click)="handle()">Edit</button>
+        <button *ngIf="!data" type="submit" class="btn btn-primary" (click)="handle()">Add</button>
+    </form>
+</div>

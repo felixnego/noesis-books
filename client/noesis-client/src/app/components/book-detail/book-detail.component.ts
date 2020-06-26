@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core'
 import { BookService } from '../../../services/book.service'
 import { BookDetail } from '../../../models/BookDetail'
 import { ActivatedRoute, Router } from '@angular/router'
+import { MatDialog, MatDialogConfig } from '@angular/material'
+import { BookUpsertComponent } from '../book-upsert/book-upsert.component'
 
 @Component({
   selector: 'app-book-detail',
@@ -17,7 +19,8 @@ export class BookDetailComponent implements OnInit {
 
   constructor(
     private _bookService: BookService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog
   ) { }
 
   getBook() {
@@ -31,6 +34,15 @@ export class BookDetailComponent implements OnInit {
 
   constructEmptyArray(n: number): number[] {
     return Array(Math.round(n))
+  }
+
+  openUpsertDialog(book: BookDetail) {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true // closes on ESC or clickng outside
+    dialogConfig.autoFocus = true
+
+    let ref = this.dialog.open(BookUpsertComponent, { data: {book: book}, maxHeight: '90vh', width: '600px' })
+    ref.afterClosed().subscribe(_ => this.getBook())
   }
 
   ngOnInit() {
