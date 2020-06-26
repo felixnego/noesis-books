@@ -21,8 +21,21 @@
                     </li>
                     <li class="nav-item" [routerLinkActive]="['link-active']"
                         [routerLinkActiveOptions]="{ exact: true }">
-                        <a class="nav-link text-dark" [routerLink]="['/books']">Books</a>
+                        <a class="nav-link text-dark" [routerLink]="['/books']"><fa name="book"></fa> Books</a>
                     </li>
+
+                    <li class="nav-item" [routerLinkActive]="['link-active']">
+                        <a class="nav-link text-dark" [routerLink]="['/register']"><fa name="user-plus"></fa> Register</a>
+                    </li>
+                    
+                    <li class="nav-item" [routerLinkActive]="['link-active']">
+                        <a class="nav-link text-dark" [routerLink]="['/login']"><fa name="sign-in"></fa> Login</a>
+                    </li>
+                    
+                    <li *ngIf="username != null" class="nav-item">
+                        <a class="nav-link text-dark" (click)="logout()"><fa name="sign-out"></fa> Logout</a>
+                    </li>
+
                 </ul>
             </div>
         </div>

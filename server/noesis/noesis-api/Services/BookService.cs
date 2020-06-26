@@ -19,6 +19,7 @@ namespace noesis_api.Services
         Task<IEnumerable<BookListDTO>> SearchBooks(string searchTerms);
         Task<Book> AddBook(BookDetailDTO book);
         Task<Book> UpdateBook(BookDetailDTO book);
+        Task<Book> DeleteBook(long id);
         Task<IEnumerable<CategoryDTO>> GetAllCategories();
         Task<IEnumerable<AuthorListDTO>> GetAllAuthors();
     }
@@ -214,6 +215,20 @@ namespace noesis_api.Services
             var initialSet = await _context.Author.ToListAsync();
 
             return _mapper.Map<IEnumerable<AuthorListDTO>>(initialSet);
+        }
+
+        public async Task<Book> DeleteBook(long id)
+        {
+            var book = await _context.Book.FindAsync(id);
+            if (book == null)
+            {
+                return null;
+            }
+
+            _context.Book.Remove(book);
+            await _context.SaveChangesAsync();
+
+            return book;
         }
     }
 }

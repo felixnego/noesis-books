@@ -20,7 +20,8 @@ export class BookDetailComponent implements OnInit {
   constructor(
     private _bookService: BookService,
     private route: ActivatedRoute,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private router: Router
   ) { }
 
   getBook() {
@@ -43,6 +44,14 @@ export class BookDetailComponent implements OnInit {
 
     let ref = this.dialog.open(BookUpsertComponent, { data: {book: book}, maxHeight: '90vh', width: '600px' })
     ref.afterClosed().subscribe(_ => this.getBook())
+  }
+
+  delete(id: number): void {
+    if (confirm('Are you sure you want to delete this book? This action cannot be reverted!')) {
+      this._bookService.deleteBook(id).subscribe(
+        _ => this.router.navigateByUrl('books')
+      )
+    }
   }
 
   ngOnInit() {

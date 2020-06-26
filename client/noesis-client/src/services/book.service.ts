@@ -61,6 +61,10 @@ export class BookService {
     return this.http.post(this.bookURL, book)
   }
 
+  deleteBook(id: number): Observable<BookDetail> {
+    return this.http.delete<BookDetail>(this.bookURL + `/${id}`)
+  }
+
   resetPage() {
     this.currentPage = -1
   }

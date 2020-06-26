@@ -80,16 +80,14 @@ namespace noesis_api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(long id)
         {
-            var book = await _context.Book.FindAsync(id);
-            if (book == null)
+            var result = await _bookService.DeleteBook(id);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            _context.Book.Remove(book);
-            await _context.SaveChangesAsync();
-
-            return book;
+            return Ok(result);
         }
 
         private bool BookExists(long id)

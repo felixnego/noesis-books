@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core'
 import { MatDialog, MatDialogConfig } from '@angular/material'
 import { BookUpsertComponent } from '../book-upsert/book-upsert.component'
+import { AuthService } from '../../../services/auth.service'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-nav-menu',
@@ -8,29 +10,44 @@ import { BookUpsertComponent } from '../book-upsert/book-upsert.component'
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent implements OnInit {
-  isExpanded = false;
+
+  isExpanded = false
+  public username: string
 
   constructor(
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private _authService: AuthService,
+    private router: Router
   ) { }
 
-  ngOnInit() {
-  }
 
   collapse() {
-    this.isExpanded = false;
+    this.isExpanded = false
   }
 
   openUpsertDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true // closes on ESC or clickng outside
-    dialogConfig.autoFocus = true
+    const dialogConfig = new MatDialogConfig()
 
     let ref = this.dialog.open(BookUpsertComponent, { data: null, maxHeight: '90vh', width: '600px'})
-    // ref.afterClosed().subscribe(_ => )
+  }
+
+  logout() {
+    this._authService.logout()
+    this.router.navigateByUrl('/')
+  }
+
+  authServiceSubscribe() {
+    this._authService.getEmitter().subscribe(
+      data => this.username = data
+    )
   }
 
   toggle() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  ngOnInit() {
+    this.username = this._authService.getDecodedToken()['unique_name']
+    this.authServiceSubscribe()
   }
 }

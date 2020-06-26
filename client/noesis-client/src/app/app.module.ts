@@ -20,7 +20,9 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { BookDetailComponent } from './components/book-detail/book-detail.component'
 import { MatDialogModule } from '@angular/material/dialog'
 import { BookUpsertComponent } from './components/book-upsert/book-upsert.component'
-import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component'
 
 
 @NgModule({
@@ -32,7 +34,9 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
     TopBooksComponent,
     SearchResultsComponent,
     BookDetailComponent,
-    BookUpsertComponent
+    BookUpsertComponent,
+    RegisterComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
