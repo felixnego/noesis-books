@@ -17,7 +17,10 @@ namespace noesis_api.Services
         Task<IEnumerable<CategoryDTO>> GetTopCategories();
         Task<IEnumerable<BookListDTO>> TopInCategory(long categoryId);
         Task<IEnumerable<BookListDTO>> SearchBooks(string searchTerms);
-        Task AddBook(BookDetailDTO book);
+        Task<Book> AddBook(BookDetailDTO book);
+        Task<Book> UpdateBook(BookDetailDTO book);
+        Task<IEnumerable<CategoryDTO>> GetAllCategories();
+        Task<IEnumerable<AuthorListDTO>> GetAllAuthors();
     }
 
     public class BookService : IBookService
@@ -122,19 +125,95 @@ namespace noesis_api.Services
             return null;
         }
 
-        public async Task AddBook(BookDetailDTO book)
+        public async Task<Book> AddBook(BookDetailDTO book)
         {
             var bookForCreation = _mapper.Map<Book>(book);
 
             _context.Book.Add(bookForCreation);
             await _context.SaveChangesAsync();
 
-            book.BookAuthors.ForEach(a =>
-                if
-            )
+            AddAuthors(book, bookForCreation.Id);
+
+            AddCategories(book, bookForCreation.Id);
+
+            return bookForCreation;
         }
 
+        public async Task<Book> UpdateBook(BookDetailDTO book)
+        {
+            var bookEntity = _mapper.Map<Book>(book);
 
 
+            _context.Entry(bookEntity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+
+            _context.BookAuthors.RemoveRange(_context.BookAuthors.Where(x => x.BookId == bookEntity.Id));
+            _context.BookCategory.RemoveRange(_context.BookCategory.Where(x => x.BookId == bookEntity.Id));
+            await _context.SaveChangesAsync();
+
+            AddAuthors(book, bookEntity.Id);
+            AddCategories(book, bookEntity.Id);
+
+            return bookEntity;
+        }
+
+        public void AddAuthors(BookDetailDTO book, long bookCreatedId)
+        {
+            book.BookAuthors.ForEach(a => {
+                long authorId = 0;
+
+                if (a.Id > 0)
+                {
+                    authorId = a.Id;
+                }
+                else
+                {
+                    var newAuthor = new Author { Name = a.Name };
+                    _context.Author.Add(newAuthor);
+                    _context.SaveChanges();
+                    authorId = newAuthor.Id;
+                }
+                var bookAuthor = new BookAuthor { BookId = bookCreatedId, AuthorId = authorId };
+                _context.BookAuthors.Add(bookAuthor);
+                _context.SaveChanges();
+            });
+        }
+
+        public void AddCategories(BookDetailDTO book, long bookCreatedId)
+        {
+            book.BookCategories.ForEach(c =>
+            {
+                long catId = 0;
+
+                if (c.Id > 0)
+                {
+                    catId = c.Id;
+                }
+                else
+                {
+                    var newCategory = new Category { CategoryDescription = c.CategoryDescription };
+                    _context.Category.Add(newCategory);
+                    _context.SaveChanges();
+                    catId = newCategory.Id;
+                }
+                var bookCategory = new BookCategory { BookId = bookCreatedId, CategoryId = catId };
+                _context.BookCategory.Add(bookCategory);
+                _context.SaveChanges();
+            });
+        }
+
+        public async Task<IEnumerable<CategoryDTO>> GetAllCategories()
+        {
+            var initialSet = await _context.Category.ToListAsync();
+
+            return _mapper.Map<IEnumerable<CategoryDTO>>(initialSet);
+        }
+
+        public async Task<IEnumerable<AuthorListDTO>> GetAllAuthors()
+        {
+            var initialSet = await _context.Author.ToListAsync();
+
+            return _mapper.Map<IEnumerable<AuthorListDTO>>(initialSet);
+        }
     }
 }

@@ -1,5 +1,5 @@
 export class BookDetail {
-    id: number
+    id?: number
     title: string
     pages: number
     isbn: string
@@ -8,9 +8,9 @@ export class BookDetail {
     publisher: string
     thumbnailURL: string
     coverBigURL: string
-    averageRating: number
+    averageRating?: number
     bookCategories: any[]
     bookAuthors: any[]
-    userComments: any[]
-    userNotes: any[]
+    userComments?: any[]
+    userNotes?: any[]
 }

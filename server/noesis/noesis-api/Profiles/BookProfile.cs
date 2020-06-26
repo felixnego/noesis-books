@@ -22,7 +22,12 @@ namespace noesis_api.Profiles
                     dest => dest.AverageRating,
                     opt => opt.MapFrom(src => src.UserRatings.Count == 0 ? 0 : Math.Round(src.UserRatings.Average(userRating => userRating.RatingValue), 1)));
 
-            CreateMap<BookDetailDTO, Book>();
+            CreateMap<BookDetailDTO, Book>()
+                .ForMember(dest => dest.BookCategories, act => act.Ignore())
+                .ForMember(dest => dest.UserRatings, act => act.Ignore())
+                .ForMember(dest => dest.UserComments, act => act.Ignore())
+                .ForMember(dest => dest.UserNotes, act => act.Ignore())
+                .ForMember(dest => dest.BookAuthors, act => act.Ignore());
         }
     }
 }

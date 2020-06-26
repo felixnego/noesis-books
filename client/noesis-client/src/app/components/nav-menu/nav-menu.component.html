@@ -16,6 +16,9 @@
                     <li *ngIf="username != null" class="nav-item">
                         <a class="nav-link" disabled>Welcome, {{ username }}</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-dark" (click)="openUpsertDialog()"><fa name="plus"></fa> Add Book</a>
+                    </li>
                     <li class="nav-item" [routerLinkActive]="['link-active']"
                         [routerLinkActiveOptions]="{ exact: true }">
                         <a class="nav-link text-dark" [routerLink]="['/books']">Books</a>

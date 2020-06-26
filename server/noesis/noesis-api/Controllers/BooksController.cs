@@ -52,44 +52,28 @@ namespace noesis_api.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutBook(long id, Book book)
+        public async Task<IActionResult> PutBook(long id, BookDetailDTO book)
         {
             if (id != book.Id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(book).State = EntityState.Modified;
+            var updatedBook = await _bookService.UpdateBook(book);
 
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BookExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+            return Ok(updatedBook);
         }
 
         // POST: api/Books
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPost]
-        public async Task<ActionResult<Book>> PostBook(Book book)
+        public async Task<IActionResult> PostBook(BookDetailDTO book)
         {
-            _context.Book.Add(book);
-            await _context.SaveChangesAsync();
+            var newBook = await _bookService.AddBook(book);
 
-            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+            return Ok(newBook);
+
         }
 
         // DELETE: api/Books/5

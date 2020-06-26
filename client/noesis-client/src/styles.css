@@ -6,3 +6,11 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
     padding-top: 70px; 
 }
+
+.mat-dialog-container {
+    max-width: none !important;
+}
+
+mat-form-field {
+    width: 100%;
+}
