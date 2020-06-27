@@ -10,6 +10,8 @@ using noesis_api.Models;
 using noesis_api.DTOs;
 using noesis_api.Services;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace noesis_api.Controllers
 {
@@ -19,11 +21,20 @@ namespace noesis_api.Controllers
     {
         private readonly NoesisApiContext _context;
         private readonly IBookService _bookService;
+        private readonly ICommentService _commentService;
+        private readonly INoteService _noteService;
 
-        public BooksController(NoesisApiContext context, IBookService bookService)
+        public BooksController(
+            NoesisApiContext context,
+            IBookService bookService,
+            ICommentService commentService,
+            INoteService noteService
+        )
         {
             _context = context;
             _bookService = bookService;
+            _commentService = commentService;
+            _noteService = noteService;
         }
 
         // GET: api/Books
@@ -80,16 +91,127 @@ namespace noesis_api.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(long id)
         {
-            var book = await _context.Book.FindAsync(id);
-            if (book == null)
+            var result = await _bookService.DeleteBook(id);
+
+            if (result == null)
             {
                 return NotFound();
             }
 
-            _context.Book.Remove(book);
-            await _context.SaveChangesAsync();
+            return Ok(result);
+        }
 
-            return book;
+        [Authorize]
+        [HttpPost("{bookId}/comments")]
+        public async Task<IActionResult> PostComment(long bookId, Comment comment)
+        {
+            long userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (!BookExists(bookId))
+            {
+                return BadRequest();
+            }
+
+            var result = await _commentService.AddComment(userId, bookId, comment);
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPut("{bookId}/comments/{commentId}")]
+        public async Task<IActionResult> PutComment(long bookId, long commentId, Comment comment)
+        {
+            // Authorize: check if user submitting is the same as author of the comment
+            UserComment userComment = await _context.UserComments.FirstOrDefaultAsync(uc => uc.CommentId == commentId);
+
+            if (userComment == null)
+            {
+                return BadRequest();
+            }
+            if (userComment.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var updatedComment = await _commentService.UpdateComment(commentId, comment);
+
+            return Ok(updatedComment);
+        }
+
+        [Authorize]
+        [HttpDelete("{bookId}/comments/{commentId}")]
+        public async Task<IActionResult> DeleteComment(long bookId, long commentId)
+        {
+            UserComment userComment = await _context.UserComments.FirstOrDefaultAsync(uc => uc.CommentId == commentId);
+
+            if (userComment == null)
+            {
+                return BadRequest();
+            }
+            if (userComment.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var removedComment = await _commentService.DeleteComment(commentId, userComment);
+
+            return Ok(removedComment);
+        }
+
+        [Authorize]
+        [HttpPost("{bookId}/notes")]
+        public async Task<IActionResult> PostNote(long bookId, Note note)
+        {
+            long userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+
+            if (!BookExists(bookId))
+            {
+                return BadRequest();
+            }
+
+            var result = await _noteService.AddNote(userId, bookId, note);
+
+            return Ok(result);
+        }
+
+        [Authorize]
+        [HttpPut("{bookId}/notes/{noteId}")]
+        public async Task<IActionResult> PutNote(long bookId, long noteId, Note note)
+        {
+            UserNote userNote = await _context.UserNotes.FirstOrDefaultAsync(un => un.NoteId == noteId);
+
+            if (userNote == null)
+            {
+                return BadRequest();
+            }
+            if (userNote.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var updatedNote = await _noteService.UpdateNote(noteId, note);
+
+            return Ok(updatedNote);
+        }
+
+        [Authorize]
+        [HttpDelete("{bookId}/notes/{noteId}")]
+        public async Task<IActionResult> DeleteNote(long bookId, long noteId)
+        {
+            UserNote userNote = await _context.UserNotes.FirstOrDefaultAsync(un => un.NoteId == noteId);
+
+            if (userNote == null)
+            {
+                return BadRequest();
+            }
+            if (userNote.UserId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            var deletedNote = await _noteService.DeleteNote(noteId, userNote);
+
+            return Ok(deletedNote);
         }
 
         private bool BookExists(long id)

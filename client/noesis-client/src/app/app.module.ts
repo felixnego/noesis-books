@@ -20,8 +20,17 @@ import { MatFormFieldModule } from '@angular/material/form-field'
 import { BookDetailComponent } from './components/book-detail/book-detail.component'
 import { MatDialogModule } from '@angular/material/dialog'
 import { BookUpsertComponent } from './components/book-upsert/book-upsert.component'
-import { MatAutocompleteModule } from '@angular/material/autocomplete'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { RegisterComponent } from './components/register/register.component';
+import { LoginComponent } from './components/login/login.component'
+import { JwtModule } from '@auth0/angular-jwt';
+import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
+import { NoteEditComponent } from './components/note-edit/note-edit.component'
+import { Note } from 'src/models/Note'
 
+export function tokenGetter() {
+  return localStorage.getItem('token')
+}
 
 @NgModule({
   declarations: [
@@ -32,7 +41,11 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
     TopBooksComponent,
     SearchResultsComponent,
     BookDetailComponent,
-    BookUpsertComponent
+    BookUpsertComponent,
+    RegisterComponent,
+    LoginComponent,
+    CommentEditComponent,
+    NoteEditComponent
   ],
   imports: [
     BrowserModule,
@@ -48,10 +61,21 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete'
     MatDialogModule,
     MatIconModule,
     MatProgressSpinnerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter,
+        whitelistedDomains: ['localhost:5001'],
+        blacklistedRoutes: ['localhost:5001/users/authenticate']
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
-  entryComponents: [BookUpsertComponent]
+  entryComponents: [
+    BookUpsertComponent, 
+    CommentEditComponent,
+    NoteEditComponent
+  ]
 })
 export class AppModule { }

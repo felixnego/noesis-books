@@ -37,6 +37,7 @@
                     <hr>
                     <h4>Admin SuperPowers:</h4>
                     <button class="btn btn-lg btn-warning" (click)="openUpsertDialog(book)"><fa name="edit"></fa> Edit Book</button>
+                    <button class="btn btn-lg btn-danger" (click)="delete(book.id)"><fa name="trash"></fa> Delete Book</button>
                 </div>
             </div>
 
@@ -47,17 +48,29 @@
                 <div class="text-center">
                     <div class="notes-header">
                         <h4>Notes left on this book:</h4>
+                        <h5>Save a Note for this Book:</h5>
+                        <p><em>Only you will be able to see your saved notes</em></p>
+                        <form #newNoteForm="ngForm">
+                            <div class="form-group">
+                                <label for="text">Note</label>
+                                <input class="form-control" type="text" name="text" id="text" ngModel />
+                                <span *ngIf="errorMessages.text" class="text-danger"><small>{{errorMessages.text}}</small> </span>
+                            </div>
+                            <button class="btn btn-primary" (click)="addNote(book.id, newNoteForm)"
+                                [attr.disabled]="isLoggedIn == false ? true : null"><fa name="plus"></fa> Save Note</button>
+                        </form>
                     </div>
-                    <div *ngIf="book.userNotes">
+                    <div *ngIf="book.userNotes && userHasNotes">
                         <ul>
                             <li *ngFor="let note of book.userNotes">
-                                <a href="">
-                                    <p>{{ note.text }}</p>
+                                <a *ngIf="note.userId == loggedUserId">
+                                    <p (click)="updateNote(book.id, note)">{{ note.text }}</p>
+                                    <p><fa name="trash" (click)="deleteNote(book.id, note.id)"></fa> Delete</p>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                    <div *ngIf="book.userNotes.length === 0">
+                    <div *ngIf="book.userNotes.length === 0 || !userHasNotes">
                         <p><em><fa name="exclamation-triangle"></fa> It seems that you have not left any notes on this book yet.</em></p>
                     </div>
                 </div>
@@ -66,6 +79,16 @@
         <div class="row">
             <div class="col-lg-12">
                 <h4>Comments Section:</h4>
+                <h5>Leave a Comment:</h5>
+                <form #newCommentForm="ngForm">
+                    <div class="form-group">
+                        <label for="text">Comment text</label>
+                        <input class="form-control" type="text" name="text" id="text" ngModel />
+                        <span *ngIf="errorMessages.Text" class="text-danger"><small>{{errorMessages.text}}</small> </span>
+                    </div>
+                    <button class="btn btn-primary" (click)="addComment(book.id, newCommentForm)"
+                        [attr.disabled]="isLoggedIn == false ? true : null"><fa name="plus"></fa> Add Comment</button>
+                </form>
                 <mat-table *ngIf="dataSource" [dataSource]="dataSource" class="mat-elevation-z8">
 
                     <ng-container matColumnDef="Username">
@@ -86,8 +109,9 @@
                     <ng-container matColumnDef="Actions">
                         <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
                         <mat-cell *matCellDef="let element">
-                            <button class="btn btn-danger"><fa name="trash"></fa> Delete</button>
-                            <button class="btn btn-warning"><fa name="edit"></fa> Edit</button>
+                            <button *ngIf="element.username === loggedUser" class="btn btn-danger" (click)="deleteComment(book.id, element.id)"><fa name="trash"></fa> Delete</button>
+                            <button *ngIf="element.username === loggedUser" class="btn btn-warning" (click)="updateComment(book.id, element)"><fa name="edit"></fa> Edit</button>
+                            <p class="text-small" *ngIf="element.username != loggedUser"><em>Only the owner may delete of modify this comment</em></p>
                         </mat-cell>
                     </ng-container>
                     

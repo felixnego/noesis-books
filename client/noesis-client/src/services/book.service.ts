@@ -5,6 +5,8 @@ import { BookCard } from '../models/BookCard'
 import { BookDetail } from '../models/BookDetail'
 import { Category } from '../models/Category'
 import { Author } from '../models/Author'
+import { Comment } from '../models/Comment'
+import { Note } from '../models/Note'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -59,6 +61,34 @@ export class BookService {
 
   addBook(book: BookDetail): Observable<any> {
     return this.http.post(this.bookURL, book)
+  }
+
+  deleteBook(id: number): Observable<BookDetail> {
+    return this.http.delete<BookDetail>(this.bookURL + `/${id}`)
+  }
+
+  addComment(bookId: number, comment: Comment): Observable<any> {
+    return this.http.post(this.bookURL + `/${bookId}/comments`, comment)
+  }
+
+  updateComment(bookId: number, commentId: number, comment: Comment): Observable<any> {
+    return this.http.put(this.bookURL + `/${bookId}/comments/${commentId}`, comment)
+  }
+
+  deleteComment(bookId: number, commentId: number) {
+    return this.http.delete(this.bookURL + `/${bookId}/comments/${commentId}`)
+  }
+
+  addNote(bookId: number, note: Note): Observable<any> {
+    return this.http.post(this.bookURL + `/${bookId}/notes`, note)
+  }
+
+  updateNote(bookId: number, noteId: number, note: Note): Observable<any> {
+    return this.http.put(this.bookURL + `/${bookId}/notes/${noteId}`, note)
+  }
+
+  deleteNote(bookId: number, noteId: number): Observable<any> {
+    return this.http.delete(this.bookURL + `/${bookId}/notes/${noteId}`)
   }
 
   resetPage() {

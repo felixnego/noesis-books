@@ -135,6 +135,7 @@ export class BookUpsertComponent implements OnInit {
       pages: this.data != null ? new FormControl(this.data.book.pages) : new FormControl(''),
       isbn: this.data != null ? new FormControl(this.data.book.isbn) : new FormControl(''),
       year: this.data != null ? new FormControl(this.data.book.year) : new FormControl(''),
+      description: this.data != null ? new FormControl(this.data.book.description) : new FormControl(''),
       goodReadsId: this.data != null ? new FormControl(this.data.book.goodReadsId) : new FormControl(''),
       publisher: this.data != null ? new FormControl(this.data.book.publisher) : new FormControl(''),
       thumbnailURL: this.data != null ? new FormControl(this.data.book.thumbnailURL) : new FormControl(''),

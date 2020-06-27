@@ -1,0 +1,12 @@
+<div class="container">
+    <form [formGroup]="editNoteForm">
+        <div class="form-group">
+            <label for="text">Note Text</label>
+            <input type="text" class="form-control" id="text" name="text" placeholder="Edit the text"
+                formControlName="text">
+            <span *ngIf="errorMessages.text" class="text-danger"><small>{{errorMessages.text}}</small> </span>
+        </div>
+        <button type="submit" class="btn btn-warning" (click)="editNote()">Edit Your Note</button>
+    </form>
+</div>
+
