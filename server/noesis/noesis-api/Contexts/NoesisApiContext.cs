@@ -21,6 +21,7 @@ namespace noesis_api.Contexts
         public DbSet<Category> Category { get; set; }
         public DbSet<BookCategory> BookCategory { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Note> Note { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
