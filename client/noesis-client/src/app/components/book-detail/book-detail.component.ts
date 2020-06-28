@@ -9,6 +9,7 @@ import { CommentEditComponent } from '../comment-edit/comment-edit.component'
 import { NoteEditComponent } from '../note-edit/note-edit.component'
 import { Comment } from '../../../models/Comment'
 import { Note } from '../../../models/Note'
+import { Rating } from '../../../models/Rating'
 
 @Component({
   selector: 'app-book-detail',
@@ -26,6 +27,10 @@ export class BookDetailComponent implements OnInit {
   public loggedUser
   public loggedUserId
   public userHasNotes: boolean
+  public ratings: number[] = [1, 2, 3, 4, 5]
+  public hoverIndex: number
+  public lastRatingValue: number
+  public userRating: Rating = new Rating()
 
   constructor(
     private _bookService: BookService,
@@ -38,10 +43,9 @@ export class BookDetailComponent implements OnInit {
   getBook() {
     this._bookService.getBookDetails(this.bookId).subscribe(
       result => {
-        this.book = result;
-        this.dataSource = this.book.userComments;
-        this.userHasNotes = this.book.userNotes.map(e => e.userId).includes(Number(this.loggedUserId));
-        console.log(this.loggedUserId);
+        this.book = result
+        this.dataSource = this.book.userComments
+        this.userHasNotes = this.book.userNotes.map(e => e.userId).includes(Number(this.loggedUserId))
       }
     )
   }
@@ -108,6 +112,20 @@ export class BookDetailComponent implements OnInit {
     ref.afterClosed().subscribe(_ => this.getBook())
   }
 
+  sendRating(rating: number): void {
+    localStorage.setItem(this.loggedUserId.toString(), rating.toString())
+    localStorage.setItem(this.loggedUser.toString(), this.bookId.toString())
+    this.lastRatingValue = rating
+
+    this.userRating.userId = this.loggedUserId
+    this.userRating.bookId = this.bookId
+    this.userRating.ratingValue = rating
+
+    this._bookService.addRating(this.bookId, this.userRating).subscribe(_ => {
+      this.getBook()
+    })
+  }
+
   ngOnInit() {
     this.bookId = Number(this.route.snapshot.paramMap.get('id'))
 
@@ -118,6 +136,10 @@ export class BookDetailComponent implements OnInit {
       this.loggedUserId = this._authService.decodedToken.nameid
     }
     this.getBook()
+    if (localStorage.getItem(this.loggedUser.toString()) == this.bookId.toString()) {
+      this.lastRatingValue = parseInt(localStorage.getItem(this.loggedUserId.toString()), 10)
+    }
+    
   }
 
 }

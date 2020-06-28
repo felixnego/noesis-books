@@ -214,6 +214,15 @@ namespace noesis_api.Controllers
             return Ok(deletedNote);
         }
 
+        [Authorize]
+        [HttpPost("{bookId}/ratings")]
+        public async Task<IActionResult> PostRating(long bookId, UserRating userRating)
+        {
+            var rating = await _bookService.AddRating(bookId, userRating);
+
+            return Ok(rating);
+        }
+
         private bool BookExists(long id)
         {
             return _context.Book.Any(e => e.Id == id);

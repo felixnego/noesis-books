@@ -7,6 +7,7 @@ import { Category } from '../models/Category'
 import { Author } from '../models/Author'
 import { Comment } from '../models/Comment'
 import { Note } from '../models/Note'
+import { Rating } from '../models/Rating'
 import { environment } from 'src/environments/environment'
 
 @Injectable({
@@ -89,6 +90,10 @@ export class BookService {
 
   deleteNote(bookId: number, noteId: number): Observable<any> {
     return this.http.delete(this.bookURL + `/${bookId}/notes/${noteId}`)
+  }
+
+  addRating(bookId: number, rating: Rating): Observable<any> {
+    return this.http.post(this.bookURL + `/${bookId}/ratings`, rating)
   }
 
   resetPage() {
