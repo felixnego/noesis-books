@@ -4,6 +4,7 @@
   /*background-image: linear-gradient(to right top, #838383, #85858b, #878793, #878a9b, #868da3, #8696b2, #82a0c0, #7cabcd, #70bfe0, #62d3ec, #58e8f2, #5ffbf1);*/
 }
 
+
 #book-details {
   background-color: #f8f8f8;
   margin-bottom: 20px;
@@ -138,3 +139,23 @@ form {
   font-size: 14px;
   margin: auto;
 }
+
+.rating-list {
+  display: inline-block;
+  list-style: none;
+  padding: 1em !important;
+}
+
+.rating-list li {
+    float: right;
+    color: #ddd;
+    margin: 0 !important;
+}
+  
+.rating-list li.selected,
+.rating-list li.hovered,
+.rating-list li:hover { 
+    color: #ffd700;
+    cursor: pointer;
+}
+  

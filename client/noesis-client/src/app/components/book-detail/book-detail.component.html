@@ -33,6 +33,22 @@
                         {{ cat.categoryDescription }}
                     </mat-chip>
                 </mat-chip-list>
+                <hr>
+                <div *ngIf="isLoggedIn">
+                    <h4>Leave a Rating:</h4>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul *ngFor="let rating of ratings" class="list-inline rating-list">
+                                <li (mouseenter)="hoverIndex=rating"
+                                    (mouseleave)="hoverIndex=-1"
+                                    (click)="sendRating(rating)"
+                                    [ngClass]="{'selected': rating <= lastRatingValue, 'hovered': rating <= hoverIndex}" id="rating">
+                                    <fa name="star"></fa>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <hr>
                     <h4>Admin SuperPowers:</h4>

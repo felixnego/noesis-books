@@ -22,6 +22,7 @@ namespace noesis_api.Services
         Task<Book> DeleteBook(long id);
         Task<IEnumerable<CategoryDTO>> GetAllCategories();
         Task<IEnumerable<AuthorListDTO>> GetAllAuthors();
+        Task<UserRating> AddRating(long bookId, UserRating userRating);
     }
 
     public class BookService : IBookService
@@ -229,6 +230,33 @@ namespace noesis_api.Services
             await _context.SaveChangesAsync();
 
             return book;
+        }
+
+        public async Task<UserRating> AddRating(long bookId, UserRating userRating)
+        {
+            var existingRating = await _context.UserRatings.Where(
+                ur => ur.UserId == userRating.UserId && ur.BookId == userRating.BookId
+                ).SingleOrDefaultAsync();
+
+            if (existingRating != null)
+            {
+                existingRating.RatingValue = userRating.RatingValue;
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                _context.UserRatings.Add(userRating);
+
+                var book = await _context.Book.FindAsync(bookId);
+                book.UserRatings.Add(userRating);
+
+                var user = await _context.User.FindAsync(userRating.UserId);
+                user.UserRatings.Add(userRating);
+
+                await _context.SaveChangesAsync();
+            }
+
+            return userRating;
         }
     }
 }
