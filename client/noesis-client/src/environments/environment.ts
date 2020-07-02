@@ -4,6 +4,7 @@
 
 export const environment = {
   apiUrl: 'https://localhost:5001',
+  recommendationEngineUrl: 'http://localhost:5000',
   production: false
 }
 

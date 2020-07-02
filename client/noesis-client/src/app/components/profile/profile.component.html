@@ -1,0 +1,52 @@
+<div class="container">
+
+    <div *ngIf="isLoggedIn" class="jumbotron text-center">
+        <h1>Welcome to Noesis, {{ username }}</h1>
+        <p>On your profile page you can view the notes you saved
+            as well as receive personalized book recommendations!
+        </p>
+    </div>
+
+    <div *ngIf="!isLoggedIn" class="jumbotron text-center">
+        <h1><fa name="warning"></fa> Please log in to access your profile!</h1>
+    </div>
+
+
+    <div *ngIf="isLoggedIn" class="text-center">
+        <h2>Based on your ratings, we recommend these books for you:</h2>
+        
+        <div *ngIf="books.length == 0" class="text-center">
+            <h2>Loading...</h2>
+            <mat-spinner class="progress-spinner"></mat-spinner>
+        </div>
+
+        <div class="row">
+            
+            <div *ngFor="let book of books" class="col-md-3 col-sm-6">
+                <div class="thumbnail">
+                    <div class="thumbnail-div">
+                        <img [src]="book.thumbnailURL" class="poster">
+                    </div>
+                    <div class="caption">
+                        <h5>{{ book.title }}</h5>
+                        <p *ngFor="let author of book.bookAuthors">{{ author.name }}</p>
+                    </div>
+                    <p *ngIf="book.averageRating != 0">Rating: {{ book.averageRating }} - <fa
+                            *ngFor="let item of constructEmptyArray(book.averageRating)" name="star" class="rating-star"></fa>
+                    </p>
+                    <p *ngIf="book.averageRating == 0">
+                        Not yet rated
+                    </p>
+                    <div class="chips">
+                        <mat-chip-list aria-label="Categories" class="chips">
+                            <mat-chip *ngFor="let cat of book.bookCategories | slice:0:3" color="primary" selected>
+                                {{ cat.categoryDescription }}
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+                    <p><a class="btn btn-primary" [routerLink]="['/books/', book.id]">See More</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -26,7 +26,9 @@ import { LoginComponent } from './components/login/login.component'
 import { JwtModule } from '@auth0/angular-jwt';
 import { CommentEditComponent } from './components/comment-edit/comment-edit.component';
 import { NoteEditComponent } from './components/note-edit/note-edit.component'
-import { Note } from 'src/models/Note'
+import { Note } from 'src/models/Note';
+import { UserDetailComponent } from './components/user-detail/user-detail.component';
+import { ProfileComponent } from './components/profile/profile.component'
 
 export function tokenGetter() {
   return localStorage.getItem('token')
@@ -45,7 +47,9 @@ export function tokenGetter() {
     RegisterComponent,
     LoginComponent,
     CommentEditComponent,
-    NoteEditComponent
+    NoteEditComponent,
+    UserDetailComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,
