@@ -26,6 +26,7 @@ export class BookDetailComponent implements OnInit {
   private errorMessages = []
   public loggedUser
   public loggedUserId
+  public loggedUserRole: string
   public userHasNotes: boolean
   public ratings: number[] = [1, 2, 3, 4, 5]
   public hoverIndex: number
@@ -122,6 +123,9 @@ export class BookDetailComponent implements OnInit {
     this.userRating.ratingValue = rating
 
     this._bookService.addRating(this.bookId, this.userRating).subscribe(_ => {
+      this._bookService.reTrainModel().subscribe(_ => {
+        console.log('Your new rating will re train the ML model!')
+      })
       this.getBook()
     })
   }
@@ -134,6 +138,7 @@ export class BookDetailComponent implements OnInit {
     if (this.isLoggedIn) {
       this.loggedUser = this._authService.decodedToken.unique_name
       this.loggedUserId = this._authService.decodedToken.nameid
+      this.loggedUserRole = this._authService.decodedToken.role
     }
     this.getBook()
     if (localStorage.getItem(this.loggedUser.toString()) == this.bookId.toString()) {

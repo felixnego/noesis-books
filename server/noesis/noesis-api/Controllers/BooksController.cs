@@ -62,6 +62,7 @@ namespace noesis_api.Controllers
         // PUT: api/Books/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = UserRole.Admin)]
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(long id, BookDetailDTO book)
         {
@@ -78,6 +79,7 @@ namespace noesis_api.Controllers
         // POST: api/Books
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = UserRole.Admin)]
         [HttpPost]
         public async Task<IActionResult> PostBook(BookDetailDTO book)
         {
@@ -88,6 +90,7 @@ namespace noesis_api.Controllers
         }
 
         // DELETE: api/Books/5
+        [Authorize(Roles = UserRole.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Book>> DeleteBook(long id)
         {

@@ -101,6 +101,10 @@ export class BookService {
     return this.http.get(this.recommendationURL + `/recommend/${userId}`)
   }
 
+  reTrainModel(): Observable<any> {
+    return this.http.get(this.recommendationURL + '/train')
+  }
+
   resetPage() {
     this.currentPage = -1
   }

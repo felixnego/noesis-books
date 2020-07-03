@@ -9,7 +9,8 @@ CORS(app)
 @app.route('/train')
 def train():
     train_model()
-    return 'Model trained successfully'
+    print('A request has triggered model re-training')
+    return jsonify('Model trained successfully')
 
 @app.route('/recommend/<user_id>')
 def recommend(user_id):

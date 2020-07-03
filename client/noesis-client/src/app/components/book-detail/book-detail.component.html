@@ -49,11 +49,16 @@
                         </div>
                     </div>
                 </div>
-                <div>
+                <div *ngIf="loggedUserRole === 'Admin'">
                     <hr>
                     <h4>Admin SuperPowers:</h4>
                     <button class="btn btn-lg btn-warning" (click)="openUpsertDialog(book)"><fa name="edit"></fa> Edit Book</button>
                     <button class="btn btn-lg btn-danger" (click)="delete(book.id)"><fa name="trash"></fa> Delete Book</button>
+                </div>
+                <div *ngIf="loggedUserRole === 'User'">
+                    <hr>
+                    <h5>We are sorry: your current role does not have any SuperPowers associated!</h5>
+                    <p><em>Please contact one of our Admins if you believe this to be a mistake.</em></p>
                 </div>
             </div>
 

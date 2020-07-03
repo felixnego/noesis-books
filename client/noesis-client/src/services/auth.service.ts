@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   emitLoginData() {
-    this.fireIsLoggedIn.emit(this.decodedToken.unique_name);
+    this.fireIsLoggedIn.emit(this.decodedToken);
   }
 
   getEmitter() {

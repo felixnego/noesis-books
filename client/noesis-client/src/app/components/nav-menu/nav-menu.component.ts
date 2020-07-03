@@ -15,6 +15,7 @@ export class NavMenuComponent implements OnInit {
   public username: string
   public userId: number
   public isLoggedIn: boolean
+  public userRole: string
 
   constructor(
     private dialog: MatDialog,
@@ -40,7 +41,7 @@ export class NavMenuComponent implements OnInit {
 
   authServiceSubscribe() {
     this._authService.getEmitter().subscribe(
-      data => this.username = data
+      data => this.getUserDetails(data)
     )
   }
 
@@ -48,12 +49,17 @@ export class NavMenuComponent implements OnInit {
     this.isExpanded = !this.isExpanded;
   }
 
+  getUserDetails(decodedToken: any): void {
+    decodedToken != null ? this.username = decodedToken.unique_name : this.username = null
+    decodedToken != null ? this.userId = decodedToken.nameid : this.userId = null
+    decodedToken != null ? this.userRole = decodedToken.role : this.userRole = null
+  }
+
   ngOnInit() {
     this.isLoggedIn = this._authService.isLoggedIn()
     
     if (this.isLoggedIn) {
-      this.username = this._authService.getDecodedToken()['unique_name']
-      this.userId = this._authService.getDecodedToken()['nameid']
+      this.getUserDetails(this._authService.getDecodedToken())
     }
     
     this.authServiceSubscribe()
