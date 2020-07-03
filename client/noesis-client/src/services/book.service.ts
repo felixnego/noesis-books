@@ -16,6 +16,7 @@ import { environment } from 'src/environments/environment'
 export class BookService {
 
   private bookURL = environment.apiUrl + '/api/books'
+  private recommendationURL = environment.recommendationEngineUrl
   private reportsURL = environment.apiUrl + '/api/reports'
   private currentPage: number = -1
 
@@ -94,6 +95,10 @@ export class BookService {
 
   addRating(bookId: number, rating: Rating): Observable<any> {
     return this.http.post(this.bookURL + `/${bookId}/ratings`, rating)
+  }
+
+  getRecommendations(userId: number): Observable<any> {
+    return this.http.get(this.recommendationURL + `/recommend/${userId}`)
   }
 
   resetPage() {
